@@ -166,7 +166,9 @@ const OTTPlatform = () => {
   const [openPreferences, setOpenPreferences] = useState(false);
   const [preferences, setPreferences] = useState({
     skipSongs: false,
-    skipFights: false
+    skipFights: false,
+    haveFights: false,
+    cc:false
   });
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [currentVideo, setCurrentVideo] = useState(null);
@@ -724,9 +726,7 @@ const OTTPlatform = () => {
                 <FormControlLabel 
                   control={
                     <Checkbox 
-                      checked={preferences.skipSongs} 
-                      onChange={handlePreferenceChange} 
-                      name="skipSongs" 
+              
                       sx={{
                         color: alpha('#00c2ff', 0.7),
                         '&.Mui-checked': {
@@ -739,6 +739,67 @@ const OTTPlatform = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Sports sx={{ mr: 1, fontSize: 20, color: '#00c2ff' }} />
                       <Typography>Skip Mature Content</Typography>
+                    </Box>
+                  }
+                />
+                <FormControlLabel 
+                  control={
+                    <Checkbox 
+                    checked={preferences.haveFights} 
+                    onChange={handlePreferenceChange} 
+                    name="haveFights" 
+                      sx={{
+                        color: alpha('#00c2ff', 0.7),
+                        '&.Mui-checked': {
+                          color: '#00c2ff',
+                        },
+                      }}
+                    />
+                  } 
+                  label={
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Sports sx={{ mr: 1, fontSize: 20, color: '#00c2ff' }} />
+                      <Typography>Play only Fight Scenes</Typography>
+                    </Box>
+                  }
+                />
+                <FormControlLabel 
+                  control={
+                    <Checkbox 
+                      
+                      sx={{
+                        color: alpha('#00c2ff', 0.7),
+                        '&.Mui-checked': {
+                          color: '#00c2ff',
+                        },
+                      }}
+                    />
+                  } 
+                  label={
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Sports sx={{ mr: 1, fontSize: 20, color: '#00c2ff' }} />
+                      <Typography>Play only songs</Typography>
+                    </Box>
+                  }
+                />
+                <FormControlLabel 
+                  control={
+                    <Checkbox 
+                    checked={preferences.cc} 
+                    onChange={handlePreferenceChange} 
+                    name="cc"
+                      sx={{
+                        color: alpha('#00c2ff', 0.7),
+                        '&.Mui-checked': {
+                          color: '#00c2ff',
+                        },
+                      }}
+                    />
+                  } 
+                  label={
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Sports sx={{ mr: 1, fontSize: 20, color: '#00c2ff' }} />
+                      <Typography>Generate cc</Typography>
                     </Box>
                   }
                 />

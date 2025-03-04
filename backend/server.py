@@ -15,92 +15,14 @@ os.makedirs(VIDEO_DIR, exist_ok=True)
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'mp4', 'avi', 'mov', 'mkv'}
 
-# Mock user database
+
 users = {
     "user1": "password1",
     "admin": "admin123",
     "test": "test123"
 }
 
-# Mock video database with information about different versions
-videos = {
-    1: {
-        "id": 1,
-        "title": "Action Movie 1", 
-        "base_filename": "movie1",
-        "genre": "action",
-        "hasSongs": True, 
-        "hasFights": True,
-        # Path to different versions based on preferences
-        "versions": {
-            "original": "movie1.mp4",
-            "fightRemoved": "movie1_fightremoved.mp4",
-            "songsRemoved": "movie1_songsremoved.mp4",
-            "bothRemoved": "movie1_bothremoved.mp4"
-        }
-    },
-    2: {
-        "id": 2,
-        "title": "Comedy Show 2", 
-        "base_filename": "movie2",
-        "genre": "comedy",
-        "hasSongs": True, 
-        "hasFights": False,
-        "versions": {
-            "original": "movie2.mp4",
-            "songsRemoved": "movie2_songsremoved.mp4"
-        }
-    },
-    3: {
-        "id": 3,
-        "title": "Drama Series 3", 
-        "base_filename": "movie3",
-        "genre": "drama",
-        "hasSongs": True, 
-        "hasFights": False,
-        "versions": {
-            "original": "movie3.mp4",
-            "songsRemoved": "movie3_songsremoved.mp4"
-        }
-    },
-    4: {
-        "id": 4,
-        "title": "Sci-Fi Epic 4", 
-        "base_filename": "movie4",
-        "genre": "scifi",
-        "hasSongs": False, 
-        "hasFights": True,
-        "versions": {
-            "original": "movie4.mp4",
-            "fightRemoved": "movie4_fightremoved.mp4"
-        }
-    },
-    5: {
-        "id": 5,
-        "title": "Romance Film 5", 
-        "base_filename": "movie5",
-        "genre": "romance",
-        "hasSongs": True, 
-        "hasFights": False,
-        "versions": {
-            "original": "movie5.mp4",
-            "songsRemoved": "movie5_songsremoved.mp4"
-        }
-    },
-    6: {
-        "id": 6,
-        "title": "Guna", 
-        "base_filename": "guna_cc84b931",
-        "genre": "romance",
-        "hasSongs": True, 
-        "hasFights": True,
-        "versions": {
-            "original": "guna_cc84b931.mp4",
-            "fightRemoved": "guna_cc84b931_fightremoved.mp4",
-            "songsRemoved": "guna_cc84b931_songsremoved.mp4"
-        }
-    }
-}
+videos = {}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -134,7 +56,7 @@ def get_videos():
             "id": video_id,
             "title": video_data["title"],
             "genre": video_data["genre"],
-            "thumbnail": f"/api/placeholder/300/169",  # Placeholder for thumbnails
+            "thumbnail": f"/api/placeholder/300/169",  
             "hasSongs": video_data["hasSongs"],
             "hasFights": video_data["hasFights"]
         })
@@ -162,7 +84,8 @@ def get_video():
     # Get user preferences
     skip_songs = preferences.get('skipSongs', False)
     skip_fights = preferences.get('skipFights', False)
-    
+    have_fights = preferences.get('haveFights', False)
+    cc = preferences.get('cc', False)
     # Determine which version to serve based on preferences
     version = "original"
     version_description = "Original"
@@ -176,6 +99,12 @@ def get_video():
     elif skip_fights and video["hasFights"]:
         version = "fightRemoved"
         version_description = "Fights Removed"
+    elif have_fights and video["hasFights"]:
+        version = "haveFights"
+        version_description = "Fight Scenes"
+    elif cc:
+        version = "cc"
+        version_description = "CC generated"
     
     # Get the appropriate video filename
     filename = video["versions"].get(version, video["versions"]["original"])
@@ -191,7 +120,8 @@ def get_video():
         "baseFilename": video["base_filename"],
         "preferences": {
             "skipSongs": skip_songs and video["hasSongs"],
-            "skipFights": skip_fights and video["hasFights"]
+            "skipFights": skip_fights and video["hasFights"],
+            "haveFights": have_fights and video["hasFights"]
         }
     }
     

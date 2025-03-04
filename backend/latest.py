@@ -790,7 +790,8 @@ def create_video_versions(original_path, base_filename):
         "original": original_filename,
         "fightRemoved": f"{base_filename}_fightremoved.{extension}",
         "songsRemoved": f"{base_filename}_songsremoved.{extension}",
-        "bothRemoved": f"{base_filename}_bothremoved.{extension}"
+        "bothRemoved": f"{base_filename}_bothremoved.{extension}",
+        "haveFights": f"{base_filename}_haveFights.{extension}",        
     }
     
     # In a real implementation, you would actually create these files
